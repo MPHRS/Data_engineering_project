@@ -1,0 +1,11 @@
+# environment.yml
+name: promoter-prediction
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - nextflow
+  - pandas
+  - kaggle
+  - sqlite
+  - pytorch
