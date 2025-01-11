@@ -76,7 +76,8 @@ process combine_datasets {
     tuple path(dataset_1), path(dataset_2), path(dataset_3)
     val nothing_1          // Путь до третьего датасета
     val nothing_2          // Путь до третьего датасета
-    val nothing_3          // Путь до третьего датасета
+    val nothing_3   
+    path python_script     // Путь до третьего датасета
 
         // Путь до скрип
     output:
@@ -85,9 +86,27 @@ process combine_datasets {
     script:
     """
     touch combined_data.csv
+    python ${python_script} --input1 ${dataset_1} --input2 ${dataset_2} --input3 ${dataset_3} --output combined_data.csv
     """
 }
+params.script_path_clean = "./scripts/clean.py"
+process clean_combined_dataset {
+    tag "Clean combined dataset"
+    publishDir("${params.output_dir_processed}", mode: "copy") // Сохраняем результат в той же папке, что и объединенные данные
 
+    input:
+    path combined_data
+    path python_cleaning_script
+
+    output:
+    path "cleaned_data.csv"  // Выходной файл с очищенными данными
+
+    script:
+    """
+    touch cleaned_data.csv
+    python ${python_cleaning_script} --input ${combined_data} --output cleaned_data.csv
+    """
+}
 
 
 // python3 ${script_ch}
@@ -119,11 +138,17 @@ def target_files = [
     new File("${params.output_dir_kaggle}/samira1992/promoter-or-not-bioinformatics-dataset/promoter.csv").absolutePath,
     new File("${params.output_dir_kaggle}/stefanost/gene-promoter-sequences/promoters.data").absolutePath
 ]
-target_files.each { println "File: $it" }
+// target_files.each { println "File: $it" }
+script_ch =  channel.fromPath(params.script_path)
+// script_ch.view()
 
     // filesTuple = tuple(  kaggledownloadData_3.out.data_3,   kaggledownloadData_2.out.data_2,   kaggledownloadData_1.out.data_1) 
     // Объединяем датасеты
-    combine_datasets(target_files,  kaggledownloadData_3.out.data_3,  kaggledownloadData_2.out.data_2,  kaggledownloadData_1.out.data_1)
+combine_datasets(target_files,  kaggledownloadData_3.out.data_3,  kaggledownloadData_2.out.data_2,  kaggledownloadData_1.out.data_1, script_ch)
+// Очищаем объединенный датасет
+python_cleaning_script_path =  channel.fromPath(params.script_path_clean)
+
+clean_combined_dataset(combine_datasets.out, python_cleaning_script_path)
 }
 
 
