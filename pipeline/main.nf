@@ -61,6 +61,10 @@ process kaggledownloadData_3 {
     export KAGGLE_KEY=${kaggle_key}
     mkdir -p "${dataset_name}"
     kaggle datasets download -d "${dataset_name}" -p "${dataset_name}" --unzip
+    # Переименовываем файл promoters.data в promoters_2.data
+    if [ -f "${dataset_name}/promoters.data" ]; then
+        mv "${dataset_name}/promoters.data" "${dataset_name}/promoters_2.data"
+    fi
     """
 }
 // step2
@@ -73,7 +77,7 @@ process combine_datasets {
     publishDir("${params.output_dir_processed}", mode: "copy") // Сохраняем результат в указанной папке
 
     input:
-    tuple path(dataset_1), path(dataset_2), path(dataset_3)
+    tuple path(dataset_1), path(dataset_2), path(dataset_3), path(dataset_4)
     val nothing_1          // Путь до третьего датасета
     val nothing_2          // Путь до третьего датасета
     val nothing_3   
@@ -86,9 +90,10 @@ process combine_datasets {
     script:
     """
     touch combined_data.csv
-    python ${python_script} --input1 ${dataset_1} --input2 ${dataset_2} --input3 ${dataset_3} --output combined_data.csv
+    python ${python_script} --input1 ${dataset_1} --input2 ${dataset_2} --input3 ${dataset_3} --input4 ${dataset_4} --output combined_data.csv
     """
 }
+
 params.script_path_clean = "./scripts/clean.py"
 process clean_combined_dataset {
     tag "Clean combined dataset"
@@ -107,7 +112,25 @@ process clean_combined_dataset {
     python ${python_cleaning_script} --input ${combined_data} --output cleaned_data.csv --report clean_report.txt
     """
 }
+params.visualizations_dir = "./visualiztions" 
+params.analysis_script_path = "./scripts/analysis.py"
+process analyze_data {
+    tag "Analyze data"
+    publishDir("${params.visualizations_dir}", mode: "copy") // Сохраняем визуализации в указанной папке
 
+    input:
+    path cleaned_data       // Входной файл с очищенными данными
+    path python_analysis_script // Скрипт для анализа
+
+    output:
+    path "*.png"            // Все созданные графики
+
+    script:
+    """
+    touch t.png
+    python ${python_analysis_script} --input ${cleaned_data}
+    """
+}
 
 // python3 ${script_ch}
 
@@ -133,22 +156,24 @@ workflow {
 
 
 def target_files = [
-    new File("${params.output_dir_kaggle}/nayanack/promoter-gene-prediction/promoters.data").absolutePath,
+    new File("${params.output_dir_kaggle}/nayanack/promoter-gene-prediction/promoters_2.data").absolutePath,
     new File("${params.output_dir_kaggle}/samira1992/promoter-or-not-bioinformatics-dataset/non_promoter.csv").absolutePath,
     new File("${params.output_dir_kaggle}/samira1992/promoter-or-not-bioinformatics-dataset/promoter.csv").absolutePath,
     new File("${params.output_dir_kaggle}/stefanost/gene-promoter-sequences/promoters.data").absolutePath
 ]
 // target_files.each { println "File: $it" }
 script_ch =  channel.fromPath(params.script_path)
-// script_ch.view()
 
-    // filesTuple = tuple(  kaggledownloadData_3.out.data_3,   kaggledownloadData_2.out.data_2,   kaggledownloadData_1.out.data_1) 
+
     // Объединяем датасеты
 combine_datasets(target_files,  kaggledownloadData_3.out.data_3,  kaggledownloadData_2.out.data_2,  kaggledownloadData_1.out.data_1, script_ch)
 // Очищаем объединенный датасет
 python_cleaning_script_path =  channel.fromPath(params.script_path_clean)
 
 clean_combined_dataset(combine_datasets.out, python_cleaning_script_path)
+analysis_script_path_ch =  channel.fromPath(params.analysis_script_path)
+
+analyze_data(clean_combined_dataset.out[0], analysis_script_path_ch)
 }
 
 

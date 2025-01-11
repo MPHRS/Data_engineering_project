@@ -9,3 +9,6 @@ dependencies:
   - kaggle
   - sqlite
   - pytorch
+  - matplotlib
+  - seaborn
+ 
