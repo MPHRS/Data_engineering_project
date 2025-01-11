@@ -92,19 +92,19 @@ process combine_datasets {
 params.script_path_clean = "./scripts/clean.py"
 process clean_combined_dataset {
     tag "Clean combined dataset"
-    publishDir("${params.output_dir_processed}", mode: "copy") // Сохраняем результат в той же папке, что и объединенные данные
+    publishDir("${params.output_dir_processed}", mode: "copy")
 
     input:
     path combined_data
     path python_cleaning_script
 
     output:
-    path "cleaned_data.csv"  // Выходной файл с очищенными данными
+    path "cleaned_data.csv"
+    path "clean_report.txt"
 
     script:
     """
-    touch cleaned_data.csv
-    python ${python_cleaning_script} --input ${combined_data} --output cleaned_data.csv
+    python ${python_cleaning_script} --input ${combined_data} --output cleaned_data.csv --report clean_report.txt
     """
 }
 
