@@ -1,14 +1,17 @@
-# environment.yml
 name: promoter-prediction
 channels:
   - conda-forge
+  - defaults
 dependencies:
   - python=3.10
   - nextflow
   - pandas
-  - kaggle
-  - sqlite
-  - pytorch
+  - numpy  # Для работы с массивами
+  - scikit-learn  # Для train_test_split и LabelEncoder
   - matplotlib
   - seaborn
- 
+  - pytorch
+  - torchvision  # Дополнение к PyTorch для работы с изображениями
+  - kaggle
+  - sqlite
+  - sqlalchemy

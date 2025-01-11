@@ -1,0 +1,1 @@
+Data from cleaned_data.csv successfully loaded to database sqlite:///mydatabase.db in table promoter_data.

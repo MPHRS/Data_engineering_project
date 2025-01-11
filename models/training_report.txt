@@ -1,0 +1,8 @@
+{'embed_size': 16, 'lstm_units': 32, 'dropout_rate': 0.2, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 16, 'lstm_units': 32, 'dropout_rate': 0.3, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 16, 'lstm_units': 64, 'dropout_rate': 0.2, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 16, 'lstm_units': 64, 'dropout_rate': 0.3, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 32, 'lstm_units': 32, 'dropout_rate': 0.2, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 32, 'lstm_units': 32, 'dropout_rate': 0.3, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 32, 'lstm_units': 64, 'dropout_rate': 0.2, 'accuracy': np.float64(0.9990827982990077)}
+{'embed_size': 32, 'lstm_units': 64, 'dropout_rate': 0.3, 'accuracy': np.float64(0.9990827982990077)}

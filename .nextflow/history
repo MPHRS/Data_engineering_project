@@ -207,3 +207,24 @@
 2025-01-11 15:19:05	6.2s	scruffy_laplace	ERR	a86adc457a4ea14d822b62cacae89e7d	fee024ee-1a1d-4d16-9016-59e76eb838e0	nextflow run pipeline/main.nf
 2025-01-11 15:20:25	6.3s	festering_bohr	ERR	a86adc457a4ea14d822b62cacae89e7d	7a69fe24-c576-4696-a7ea-2baa71550e8e	nextflow run pipeline/main.nf
 2025-01-11 15:23:13	14.7s	loquacious_bassi	OK	a86adc457a4ea14d822b62cacae89e7d	2d0dcfe4-7aa2-43df-9ad5-f4c2e9433e06	nextflow run pipeline/main.nf
+2025-01-11 16:06:58	12.9s	amazing_solvay	OK	a86adc457a4ea14d822b62cacae89e7d	247a95b7-d1c8-40e3-af0f-27a038208493	nextflow run pipeline/main.nf
+2025-01-11 16:12:27	10.7s	adoring_poincare	OK	a86adc457a4ea14d822b62cacae89e7d	c6683493-700d-4aa6-8b5d-41133a37586f	nextflow pipeline/main.nf
+2025-01-11 16:20:27	1m 23s	festering_becquerel	ERR	a86adc457a4ea14d822b62cacae89e7d	4ea6c5de-d331-4b63-911a-4f06f317d951	nextflow pipeline/main.nf
+2025-01-11 16:21:53	9.8s	goofy_meucci	OK	a86adc457a4ea14d822b62cacae89e7d	99286b79-c958-4773-be41-751a7f280fcf	nextflow pipeline/main.nf
+2025-01-11 20:58:53	11.1s	intergalactic_brattain	OK	a86adc457a4ea14d822b62cacae89e7d	44f7ed22-6c32-4314-ad7d-c32179e87910	nextflow pipeline/main.nf
+2025-01-11 20:59:22	-	kickass_ride	-	f666a58543128553829d8b87e8e1d903	82ca6125-09e1-454b-9b63-921c98ae44ee	nextflow pipeline/main.nf
+2025-01-11 20:59:39	6.5s	nasty_cori	ERR	688ee632c556e89f3edebe9c50ef008f	c3d455a3-087d-4776-a1ef-712bf0d8c892	nextflow pipeline/main.nf
+2025-01-11 21:05:08	1m 3s	chaotic_swirles	ERR	688ee632c556e89f3edebe9c50ef008f	ffff1cfc-e074-4091-97ac-4357990b0ca1	nextflow pipeline/main.nf
+2025-01-11 21:20:42	22s	admiring_escher	ERR	688ee632c556e89f3edebe9c50ef008f	1e97c9e5-e5aa-41b5-a95a-a3ed36304b7d	nextflow pipeline/main.nf
+2025-01-11 21:22:51	20.7s	agitated_knuth	ERR	688ee632c556e89f3edebe9c50ef008f	d8cdc47b-07ab-4929-964d-d294bf30a221	nextflow pipeline/main.nf
+2025-01-11 21:26:44	19.9s	prickly_mandelbrot	ERR	688ee632c556e89f3edebe9c50ef008f	0b38c1ff-503e-4a43-bf0a-a841c9968db4	nextflow pipeline/main.nf
+2025-01-11 21:29:04	23.4s	goofy_pare	OK	688ee632c556e89f3edebe9c50ef008f	e3daa312-1f67-4c40-b30e-4eba3068cff7	nextflow pipeline/main.nf
+2025-01-11 21:34:53	11s	magical_hawking	ERR	688ee632c556e89f3edebe9c50ef008f	d6521f76-95ff-4796-905c-da4e5f2cb8e3	nextflow pipeline/main.nf
+2025-01-11 21:40:09	25m 32s	shrivelled_bell	ERR	688ee632c556e89f3edebe9c50ef008f	6e40b7f9-d50f-4781-b8d7-b81a37174f90	nextflow pipeline/main.nf
+2025-01-11 22:07:00	-	chaotic_dubinsky	-	fd926be21c4b844788ebb78e153db00b	538711a6-f29d-419f-911f-66137c7d1877	nextflow pipeline/main.nf
+2025-01-11 22:08:58	5.8s	prickly_mayer	ERR	45f244b8032e5f6156e8157e28afc98f	99c0a46c-8d83-46e4-a5cb-75fb8108e760	nextflow pipeline/main.nf
+2025-01-11 22:09:47	10.5s	trusting_wozniak	OK	45f244b8032e5f6156e8157e28afc98f	ba5d7457-fadc-4799-b68a-60a053cabf4d	nextflow pipeline/main.nf
+2025-01-11 22:17:44	6.6s	modest_fourier	ERR	89fb83cb0c643335e5447491d6ccce97	08d17fa0-d42b-444d-a72d-59d14a9d57d4	nextflow pipeline/main.nf
+2025-01-11 22:21:35	6.2s	spontaneous_bernard	ERR	cf5aec24eae801206e36d11ff4ab36d0	f3379fd1-9137-4777-8463-c5a336576737	nextflow pipeline/main.nf
+2025-01-11 22:23:00	10.8s	nauseous_curie	OK	7b62646d9ce4451d2366f2be3e60d206	3189abb9-b9a9-4faf-9af4-8719ee36242e	nextflow pipeline/main.nf
+2025-01-11 22:40:07	10.2s	admiring_wegener	OK	7b62646d9ce4451d2366f2be3e60d206	ee4d4fbd-b9be-4b67-9d77-62f4ee8e5732	nextflow ./pipeline/main.nf

@@ -4,19 +4,23 @@ import seaborn as sns
 import argparse
 from collections import Counter
 
+# Устанавливаем красивую тему
+sns.set_theme(style="darkgrid")
+
 def plot_sequence_lengths(data):
     """Гистограмма распределения длин последовательностей."""
-    data['Length'] = data['Sequence'].str.len()
+    data['Length'] = data['Sequence'].str.len()  # Вычисляем длины последовательностей
     plt.figure(figsize=(10, 6))
-    sns.histplot(data['Length'], bins=50, kde=False, color='blue')
+    sns.histplot(data['Length'], bins=50, kde=False, color='blue')  # Убираем логарифмическую шкалу
     plt.title("Распределение длин последовательностей")
     plt.xlabel("Длина последовательности")
     plt.ylabel("Частота")
+    plt.tight_layout()
     plt.savefig("sequence_length_distribution.png")
     plt.close()
 
-def plot_kmer_heatmap(data, k=3):
-    """Тепловая карта частот k-меров."""
+def plot_kmer_histogram(data, k=3):
+    """Гистограмма частот k-меров."""
     sequences = data['Sequence']
     kmer_counts = Counter()
 
@@ -28,18 +32,15 @@ def plot_kmer_heatmap(data, k=3):
     kmer_df = pd.DataFrame(kmer_counts.items(), columns=['k-mer', 'Count']).sort_values(by='Count', ascending=False)
     top_kmers = kmer_df.head(50)
 
-    # Подготавливаем данные для отображения
-    top_kmers['Rank'] = range(1, len(top_kmers) + 1)  # Добавляем столбец для рангов
-    pivot_table = top_kmers.pivot(index='Rank', columns='k-mer', values='Count').fillna(0)
-
     plt.figure(figsize=(12, 8))
-    sns.heatmap(pivot_table, cmap="Blues", annot=True, fmt="g", cbar_kws={'label': 'Частота'})
-    plt.title(f"Тепловая карта частот {k}-меров")
+    sns.barplot(data=top_kmers, x='k-mer', y='Count', palette="viridis")
+    plt.title(f"Частоты топ-{k}-меров")
     plt.xlabel("k-меры")
-    plt.ylabel("Ранг")
-    plt.savefig("kmer_heatmap.png")
+    plt.ylabel("Частота")
+    plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.savefig("kmer_histogram.png")
     plt.close()
-
 
 def plot_class_distribution(data):
     """Круговая диаграмма распределения классов."""
@@ -69,7 +70,7 @@ def main(input_file):
 
     print("Выполняется анализ данных...")
     plot_sequence_lengths(data)
-    plot_kmer_heatmap(data)
+    plot_kmer_histogram(data)
     plot_class_distribution(data)
     plot_gc_content(data)
     print("Анализ завершен. Графики сохранены.")

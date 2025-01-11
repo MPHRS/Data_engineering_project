@@ -114,6 +114,8 @@ process clean_combined_dataset {
 }
 params.visualizations_dir = "./visualiztions" 
 params.analysis_script_path = "./scripts/analysis.py"
+params.train_script_path = "./scripts/train_scr.py"
+params.db_script_path = "./scripts/db_script.py"
 process analyze_data {
     tag "Analyze data"
     publishDir("${params.visualizations_dir}", mode: "copy") // Сохраняем визуализации в указанной папке
@@ -129,6 +131,44 @@ process analyze_data {
     """
     touch t.png
     python ${python_analysis_script} --input ${cleaned_data}
+    """
+}
+process train_model {
+    tag "Train Model"
+    publishDir("./model_output", mode: "copy") // Сохраняем результаты обучения в указанной папке
+
+    input:
+    path cleaned_data
+    path train_script_path  // Путь к скрипту обучения
+
+    output:
+    path "model_architecture.json"    // JSON с архитектурой модели
+    path "model_weights.pth"          // Веса модели
+    path "training_report.txt"        // Отчёт о процессе обучения
+    path "*.png"                      // График обучения (например, loss/accuracy по эпохам)
+
+    script:
+    """
+    python ${train_script_path} --input ${cleaned_data} --output_dir ./model_output
+    """
+}
+params.db_url = "sqlite:///mydatabase.db"  // Пример для SQLite
+params.table_name = "promoter_data"        // Имя таблицы, в которую будут загружаться данные
+
+process load_data_to_db {
+    tag "Load data to database"
+    publishDir("${params.output_dir_processed}", mode: "copy")
+
+    input:
+    path cleaned_data    // Очищенные данные
+    path python_db_script  // Скрипт для загрузки в базу данных
+
+    output:
+    path "mydatabase.db"  // Файл базы данных SQLite
+
+    script:
+    """
+    python ${python_db_script} --input ${cleaned_data} --db_file_path mydatabase.db --table_name ${params.table_name}
     """
 }
 
@@ -174,6 +214,12 @@ clean_combined_dataset(combine_datasets.out, python_cleaning_script_path)
 analysis_script_path_ch =  channel.fromPath(params.analysis_script_path)
 
 analyze_data(clean_combined_dataset.out[0], analysis_script_path_ch)
+
+// train_model(clean_combined_dataset.out[0], train_script_path_ch)
+// Загрузка в базу данных
+python_db_script = channel.fromPath(params.db_script_path)
+
+load_data_to_db(clean_combined_dataset.out[0], python_db_script)
 }
 
 
