@@ -3,16 +3,15 @@ params.dataset_name_1 = "stefanost/gene-promoter-sequences" // Название 
 params.dataset_name_2 = "samira1992/promoter-or-not-bioinformatics-dataset" // Название датасета
 params.dataset_name_3 = "nayanack/promoter-gene-prediction" // Название датасета
 
-params.output_dir_kaggle = "./data/raw_data/kaggle_data"         // Папка для сохранения
+params.output_dir_kaggle = "./data/raw_data/kaggle_data"         
 
-params.kaggle_username = "miphares"                      // Имя пользователя Kaggle
-params.kaggle_key = "52285bd03cf110ece44d5a924774d619"   // Ключ API Kaggle
-
+params.kaggle_username = "miphares"                      
+params.kaggle_key = "52285bd03cf110ece44d5a924774d619"   
 
 
 process kaggledownloadData_1 {
     tag "Download ${params.dataset_name}"
-    publishDir("${params.output_dir_kaggle}", mode: "copy")  // Указываем корректный путь
+    publishDir("${params.output_dir_kaggle}", mode: "copy")  
 
     input:
     tuple val(dataset_name), val(output_dir_kaggle), val(kaggle_username), val(kaggle_key)
@@ -30,7 +29,7 @@ process kaggledownloadData_1 {
 
 process kaggledownloadData_2 {
     tag "Download ${params.dataset_name}"
-    publishDir("${params.output_dir_kaggle}", mode: "copy")  // Указываем корректный путь
+    publishDir("${params.output_dir_kaggle}", mode: "copy")  
 
     input:
     tuple val(dataset_name), val(output_dir_kaggle), val(kaggle_username), val(kaggle_key)
@@ -48,7 +47,7 @@ process kaggledownloadData_2 {
 
 process kaggledownloadData_3 {
     tag "Download ${params.dataset_name}"
-    publishDir("${params.output_dir_kaggle}", mode: "copy")  // Указываем корректный путь
+    publishDir("${params.output_dir_kaggle}", mode: "copy")  
 
     input:
     tuple val(dataset_name), val(output_dir_kaggle), val(kaggle_username), val(kaggle_key)
@@ -69,23 +68,22 @@ process kaggledownloadData_3 {
 }
 // step2
 params.script_path = "./scripts/combine.py"
-params.output_dir_processed = "./data/processed"         // Папка для сохранения
-// Создаём канал из относительного пути и преобразуем его в абсолютный
+params.output_dir_processed = "./data/processed"        
 
 process combine_datasets {
     tag "Combine datasets"
-    publishDir("${params.output_dir_processed}", mode: "copy") // Сохраняем результат в указанной папке
+    publishDir("${params.output_dir_processed}", mode: "copy") 
 
     input:
     tuple path(dataset_1), path(dataset_2), path(dataset_3), path(dataset_4)
-    val nothing_1          // Путь до третьего датасета
-    val nothing_2          // Путь до третьего датасета
+    val nothing_1          
+    val nothing_2         
     val nothing_3   
-    path python_script     // Путь до третьего датасета
+    path python_script    
 
-        // Путь до скрип
+
     output:
-    path("combined_data.csv")  // Выходной файл с результатом
+    path("combined_data.csv") 
 
     script:
     """
@@ -118,14 +116,13 @@ params.train_script_path = "./scripts/train_scr.py"
 params.db_script_path = "./scripts/db_script.py"
 process analyze_data {
     tag "Analyze data"
-    publishDir("${params.visualizations_dir}", mode: "copy") // Сохраняем визуализации в указанной папке
-
+    publishDir("${params.visualizations_dir}", mode: "copy") 
     input:
-    path cleaned_data       // Входной файл с очищенными данными
-    path python_analysis_script // Скрипт для анализа
+    path cleaned_data      
+    path python_analysis_script 
 
     output:
-    path "*.png"            // Все созданные графики
+    path "*.png"          
 
     script:
     """
@@ -135,36 +132,35 @@ process analyze_data {
 }
 process train_model {
     tag "Train Model"
-    publishDir("./model_output", mode: "copy") // Сохраняем результаты обучения в указанной папке
+    publishDir("./model_output", mode: "copy") 
 
     input:
     path cleaned_data
-    path train_script_path  // Путь к скрипту обучения
+    path train_script_path  
 
     output:
-    path "model_architecture.json"    // JSON с архитектурой модели
-    path "model_weights.pth"          // Веса модели
-    path "training_report.txt"        // Отчёт о процессе обучения
-    path "*.png"                      // График обучения (например, loss/accuracy по эпохам)
+    path "model_architecture.json"    
+    path "model_weights.pth"         
+    path "training_report.txt"       
+    path "*.png"                     
 
     script:
     """
     python ${train_script_path} --input ${cleaned_data} --output_dir ./model_output
     """
 }
-params.db_url = "sqlite:///mydatabase.db"  // Пример для SQLite
-params.table_name = "promoter_data"        // Имя таблицы, в которую будут загружаться данные
-
+params.db_url = "sqlite:///mydatabase.db"  
+params.table_name = "promoter_data"      
 process load_data_to_db {
     tag "Load data to database"
     publishDir("${params.output_dir_processed}", mode: "copy")
 
     input:
-    path cleaned_data    // Очищенные данные
-    path python_db_script  // Скрипт для загрузки в базу данных
+    path cleaned_data   
+    path python_db_script  
 
     output:
-    path "mydatabase.db"  // Файл базы данных SQLite
+    path "mydatabase.db"  
 
     script:
     """

@@ -4,14 +4,13 @@ import seaborn as sns
 import argparse
 from collections import Counter
 
-# Устанавливаем красивую тему
 sns.set_theme(style="darkgrid")
 
 def plot_sequence_lengths(data):
     """Гистограмма распределения длин последовательностей."""
-    data['Length'] = data['Sequence'].str.len()  # Вычисляем длины последовательностей
+    data['Length'] = data['Sequence'].str.len() 
     plt.figure(figsize=(10, 6))
-    sns.histplot(data['Length'], bins=50, kde=False, color='blue')  # Убираем логарифмическую шкалу
+    sns.histplot(data['Length'], bins=50, kde=False, color='blue')  
     plt.title("Распределение длин последовательностей")
     plt.xlabel("Длина последовательности")
     plt.ylabel("Частота")

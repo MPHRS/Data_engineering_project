@@ -4,18 +4,10 @@ import pandas as pd
 import argparse
 
 def main(input_csv, db_file_path, table_name):
-    # Чтение CSV файла
     df = pd.read_csv(input_csv)
-
-    # Устанавливаем соединение с базой данных SQLite
     conn = sqlite3.connect(db_file_path)
-
-    # Загружаем данные в таблицу
     df.to_sql(table_name, conn, if_exists="replace", index=False)
-
     print(f"Данные успешно загружены в таблицу '{table_name}' базы данных '{db_file_path}'")
-
-    # Закрываем соединение
     conn.close()
 
 if __name__ == "__main__":

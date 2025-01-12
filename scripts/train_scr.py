@@ -10,10 +10,9 @@ import os
 
 # 1. Загрузка данных
 print("Loading data...")
-data_path = "data/processed/cleaned_data.csv"  # Указан путь к очищенным данным
+data_path = "data/processed/cleaned_data.csv" 
 data = pd.read_csv(data_path)
 
-# Просмотр структуры данных
 print("Data preview:")
 print(data.head())
 print(f"Number of rows in data: {len(data)}")
@@ -24,7 +23,6 @@ print(f"Missing values in each column:\n{data.isnull().sum()}")
 sequences = data['Sequence'].astype(str)
 labels = data['Promoter'].astype(int)
 
-# Проверка распределения меток
 print(f"Labels distribution: {np.bincount(labels)}")
 
 # 3. Обработка текстовых данных
@@ -34,10 +32,8 @@ char_to_idx = {ch: idx + 1 for idx, ch in enumerate(chars)}  # Индексир�
 vocab_size = len(char_to_idx) + 1
 print(f"Vocabulary size: {vocab_size}")
 
-# Преобразование последовательностей в индексы
 encoded_sequences = [[char_to_idx[ch] for ch in seq] for seq in sequences]
 
-# Паддинг последовательностей до максимальной длины
 max_seq_length = max(len(seq) for seq in encoded_sequences)
 padded_sequences = [seq + [0] * (max_seq_length - len(seq)) for seq in encoded_sequences]
 padded_sequences = np.array(padded_sequences)
@@ -152,7 +148,7 @@ for embed_size in grid_params['embed_size']:
                     print("Early stopping.")
                     break
 
-            # Оценка модели
+          
             model.eval()
             y_true, y_pred = [], []
             with torch.no_grad():
